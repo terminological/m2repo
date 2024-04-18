@@ -117,10 +117,9 @@
 								</goals>
 								<configuration>
 									<gpgArguments>
-										<!-- 			    <arg>pinentry-mode</arg> -->
-										<!-- 			    <arg>loopback</arg> -->
+										<!-- <arg>-!-pinentry-mode</arg> -->
+										<!-- <arg>loopback</arg> -->
 										<!-- GPG 2.1 requires pinentry-mode to be set to loopback in order to pick up the gpg.passphrase value defined in Maven settings.xml. -->
-										<!-- see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#Installing-custom-Java-package-type -->
 									</gpgArguments>
 									<keyname>${gpg.keyname}</keyname>
 									<passphraseServerId>${gpg.keyname}</passphraseServerId>
@@ -137,7 +136,7 @@
 							<publishingServerId>central</publishingServerId>
 							<tokenAuth>true</tokenAuth>
 							<autoPublish>true</autoPublish>
-							<deploymentName>${git.repo}:${version}</deploymentName>
+							<deploymentName>${git.repo}:${project.version}</deploymentName>
 						</configuration>
 					</plugin>
 				</plugins>
