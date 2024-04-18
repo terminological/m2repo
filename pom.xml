@@ -36,8 +36,21 @@
 		<connection>scm:git:git@github.com:${git.repo}.git</connection>
 		<developerConnection>scm:git:git@github.com:${git.repo}.git</developerConnection>
 		<url>https://github.com/${git.repo}</url>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+ 	</scm>
+ 	
+	<repositories>
+		<repository>
+			<id>Snapshots repository</id>
+			<url>https://maven.pkg.github.com/${git.m2repo}</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
 
 	<distributionManagement>
 		<snapshotRepository>
@@ -123,6 +136,8 @@
 						<configuration>
 							<publishingServerId>central</publishingServerId>
 							<tokenAuth>true</tokenAuth>
+							<autoPublish>true</autoPublish>
+							<deploymentName>${git.repo}:${version}</deploymentName>
 						</configuration>
 					</plugin>
 				</plugins>
