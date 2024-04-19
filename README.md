@@ -6,7 +6,7 @@ This repository is the distribution point for snapshot Maven packages from
 terminological. It is also the home of the parent pom.xml for projects deployed 
 in the terminological namespace. Please feel free to fork and adapt.
 
-## The Maven repository
+## Using a library from the terminological Maven repository
 
 When using this as a Maven snapshot repository use settings in consumer pom.xml
 
@@ -25,7 +25,8 @@ When using this as a Maven snapshot repository use settings in consumer pom.xml
 A minimal pom.xml for projects being deployed into this repository follows. The
 parent pom.xml here is configured with 2 profiles, the default to deploy direct
 to this repository as a github package. The second to deploy using the Maven
-release plugin to Maven Central using the [sonatype central portal](https://central.sonatype.com/). 
+release plugin to Maven Central using the 
+[sonatype central portal](https://central.sonatype.com/). 
 
 ```XML
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -81,6 +82,7 @@ release plugin to Maven Central using the [sonatype central portal](https://cent
 			</plugin>
 		</plugins>
 	</build>
+</project>
 ```
 
 Before this works you must make sure that the following config is in your 
