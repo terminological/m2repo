@@ -1,6 +1,6 @@
 # terminological snapshots repository and parent pom.xml
 
-![Maven Central Version](https://img.shields.io/maven-central/v/io.github.terminological/m2repo)
+[![Maven Central Version](https://img.shields.io/maven-central/v/io.github.terminological/m2repo)](https://central.sonatype.com/artifact/io.github.terminological/m2repo)
 
 This repository is the distribution point for snapshot Maven packages from 
 terminological. It is also the home of the parent pom.xml for projects deployed 
@@ -42,8 +42,8 @@ release plugin to Maven Central using the [sonatype central portal](https://cent
 		<artifactId>m2repo</artifactId>
 		<version>0.0.3</version>
 	</parent>
-    ...
-    <properties>
+
+	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<git.repo>terminological/%{project.artifactId}</git.repo>
