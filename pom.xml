@@ -4,7 +4,7 @@
 	<groupId>io.github.terminological</groupId>
 	<artifactId>m2repo</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.4</version>
+	<version>0.0.5-SNAPSHOT</version>
 	<name>m2-deploy-config</name>
 	<description>
 		Deploy snapshots to github and releases to maven central
@@ -36,7 +36,7 @@
 		<connection>scm:git:git@github.com:${git.repo}.git</connection>
 		<developerConnection>scm:git:git@github.com:${git.repo}.git</developerConnection>
 		<url>https://github.com/${git.repo}</url>
-		<tag>m2repo-0.0.4</tag>
+		<tag>HEAD</tag>
  	</scm>
  	
 	<repositories>
