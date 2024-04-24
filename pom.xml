@@ -41,7 +41,7 @@
  	
 	<repositories>
 		<repository>
-			<id>Snapshots repository</id>
+			<id>github</id>
 			<url>https://maven.pkg.github.com/${git.m2repo}</url>
 			<snapshots>
 				<enabled>true</enabled>
@@ -51,6 +51,21 @@
 			</releases>
 		</repository>
 	</repositories>
+	
+	<!-- N.B. repository must be paired with an entry in ~/.m2/settings.xml which 
+	matches the id above, e.g.
+	
+	<settings>
+		<servers>
+			<server>
+				<id>github</id>
+				<username>GITHUB_USERNAME</username>
+				<password>GITHUB_TOKEN</password>
+			</server>
+		</servers>
+	</settings>
+	
+	-->
 
 	<distributionManagement>
 		<snapshotRepository>

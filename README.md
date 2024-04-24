@@ -47,7 +47,7 @@ release plugin to Maven Central using the
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<git.repo>terminological/%{project.artifactId}</git.repo>
+		<git.repo>terminological/${project.artifactId}</git.repo>
 	</properties>
 	
 	<!-- IF NEEDED TO OVERRIDE DEFAULTS:
