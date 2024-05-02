@@ -13,11 +13,32 @@ When using this as a Maven snapshot repository use settings in consumer pom.xml
 ```XML
 <repositories>
 	<repository>
-		<id>terminological</id>
+		<id>github</id>
 		<url>https://maven.pkg.github.com/terminological/m2repo</url>
 	</repository>
 	...
 </repositories>
+```
+
+Github requires you to be identified even to access public repositories. This 
+is done in your `~/.m2/settings.xml` file which needs the following 
+for credentials for github, generated as github personal access token (classic), 
+[described here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) 
+and [here](https://github.com/settings/tokens) ticking the boxes for 
+`read:packages` (see also below).
+
+```XML
+<settings>
+	<servers>
+		<server>
+			<id>github</id>
+			<username>...GITHUB USERNAME...</username>
+			<password>...GITHUB CLASSIC TOKEN...</password>
+		</server>
+		...
+	</servers>
+	...
+</settings>
 ```
 
 ## Deployment to the terminological Maven repository
