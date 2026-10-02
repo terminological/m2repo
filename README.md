@@ -113,7 +113,7 @@ Before this works you must make sure that the following config is in your
 [described here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) 
 and [here](https://github.com/settings/tokens) ticking the boxes for 
 `read:packages`, `write:packages`, `delete:packages` and `repo`.
-- Maven central portal credentials are set up in the [Sonatype central portal](https://central.sonatype.com/account).
+- Maven central portal credentials are set up in the [Sonatype central portal](https://central.sonatype.com/usertoken).
 - A GPG signing key set up is working [see here](https://central.sonatype.org/publish/requirements/gpg/). 
 
 The following is a minimal example that may work but this depends on your gpg setup.
