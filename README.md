@@ -114,7 +114,9 @@ Before this works you must make sure that the following config is in your
 and [here](https://github.com/settings/tokens) ticking the boxes for 
 `read:packages`, `write:packages`, `delete:packages` and `repo`.
 - Maven central portal credentials are set up in the [Sonatype central portal](https://central.sonatype.com/usertoken).
-- A GPG signing key set up is working [see here](https://central.sonatype.org/publish/requirements/gpg/). 
+- A GPG signing key set up is working [see here](https://central.sonatype.org/publish/requirements/gpg/).
+  Check it has not expired (`gpg --list-secret-keys --keyid-format=long`) and that your public
+  key is still retrievable from a keyserver - central validates both and rejects expired keys.
 
 The following is a minimal example that may work but this depends on your gpg setup.
 
@@ -127,8 +129,8 @@ The following is a minimal example that may work but this depends on your gpg se
 			<password>...GITHUB CLASSIC TOKEN...</password>
 		</server>
 		<server>
-		<id>central</id>
-			<username>...MAVEN CENTRAL TOKEN USERNAME.../username>
+			<id>central</id>
+			<username>...MAVEN CENTRAL TOKEN USERNAME...</username>
 			<password>...MAVEN CENTRAL TOKEN PASSWORD...</password>
 		</server>
 	</servers>
@@ -148,6 +150,64 @@ The following is a minimal example that may work but this depends on your gpg se
 </settings>
 
 ```
+
+### Getting the gpg passphrase to the build
+
+`maven-gpg-plugin` always invokes gpg with `--batch --no-tty`, so gpg can never prompt you
+on the terminal - `mvn -B` is not the cause and dropping it does not help. Either the
+*gpg-agent* answers (a GUI pinentry, if the agent can reach your desktop session) or the
+signing step dies with `No pinentry` / `Inappropriate ioctl for device`. Note also that
+`release:perform` signs inside a forked `mvn` whose stdin is a pipe, so a terminal prompt
+could not be answered there even if gpg allowed one. Pick one of:
+
+**1. Let the gpg-agent cache it** - nothing is written to disk, nothing to configure in
+Maven. Answer the prompt once from a desktop terminal, then release straight away:
+
+```
+echo test | gpg --local-user ...GPG KEY... --armor --sign -o /tmp/t.asc   # prompts once
+cd ~/Git/m2repo && mvn -B release:clean release:prepare release:perform
+```
+
+The agent caches for 600s by default, usually enough. If it is not, put
+`default-cache-ttl 3600` and `max-cache-ttl 3600` in `~/.gnupg/gpg-agent.conf` and run
+`gpgconf --reload gpg-agent`. If no dialog appears at all the agent is using a tty
+pinentry; set `pinentry-program /usr/bin/pinentry-qt` (or `pinentry-gtk-3`) there instead.
+
+**2. Feed it from your password manager.** Requires the two `pinentry-mode loopback` args
+in the `maven-gpg-plugin` config of the `central.profile` above to be uncommented, with
+`-!-` changed back to `--` (the dashes are broken up because XML forbids `--` inside a
+comment), then:
+
+```
+mvn -B -Dgpg.passphrase="$(pass show maven/gpg)" release:clean release:prepare release:perform
+```
+
+`pass`, `gopass`, `op read`, `security find-generic-password` and friends all work. The
+passphrase is visible in `ps` to other users on a shared machine for the length of the
+build; harmless on a laptop.
+
+**3. Encrypt it inside `settings.xml`.** The plugin runs server credentials through Maven's
+`SettingsDecrypter`, so `{...}` encrypted values are accepted:
+
+```
+mvn --encrypt-master-password   # paste the result into ~/.m2/settings-security.xml
+mvn --encrypt-password          # -> the value below
+```
+
+```XML
+<server>
+	<id>...GPG KEY...</id>
+	<passphrase>{...ENCRYPTED PASSPHRASE...}</passphrase>
+</server>
+```
+
+The `<id>` must match `passphraseServerId`, i.e. it is the key name, not `gpg.passphrase`.
+Loopback is needed here too. This is obfuscation rather than secrecy - the master password
+sits in `~/.m2/settings-security.xml` alongside it - but it does keep the plaintext out of
+anything you might paste or commit.
+
+Never enable loopback without also supplying a passphrase: gpg then fails outright rather
+than falling back to the agent, which is why the args ship commented out.
 
 With this configuration deploying a snapshot version as a github Maven package:
 
